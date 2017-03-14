@@ -113,6 +113,7 @@ int main(int argc, char* argv[]) {
 				if (peek_char == 13 || peek_char == 10) {
 					strTemp += '\n';
 				}
+				strTemp += " ";
 				documents[curDocIndex] += strTemp;
 			}
 			filein.close();

@@ -51,6 +51,11 @@ string replacer (string sFn) {
 	return resultant;
 }
 int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		cout << "Modulaether-script; preprocesses .aes files to modular javascript." << endl;
+		cout << "Usage: maejs main_file [other_files...]" << endl;
+		return 1;
+	}
 	string file_mae;
 	file_mae = argv[1];
 	string fn_js = file_mae.substr(0, file_mae.size() - 3) + "js";

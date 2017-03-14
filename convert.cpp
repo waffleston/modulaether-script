@@ -11,6 +11,15 @@ const string sFunc = "$%fn";
 const string sNew = "{function}";
 const string sEnd = "$%endfn";
 
+char retChar(char inbound) {
+	// This is just a test to see how to unlink variable from function.
+	return inbound;
+}
+string trimCR(string inbound) {
+	inbound.erase(inbound.find_last_not_of("\n\r")+1);
+	return inbound;
+}
+
 string replacer (string sFn) {
 	string resultant = "";
 	string rFn;
@@ -61,17 +70,24 @@ int main(int argc, char* argv[]) {
 	int iBrackets = 0;
 	int writetodoc = 0;
 	while (filein >> strTemp) {
+		char peek_char;
+		peek_char = retChar(filein.peek());
+		// Maintain carriage returns (windows & bsd);
+		if (peek_char == 13) {
+			strTemp += '\n';
+		}
+
 		// Source Definition
 		if (strTemp == sSourceDef) {
 			strTemp = "";
 			srcflag = 1;
 		} else if (srcflag == 1) {
-			vSources.push_back(strTemp);
+			vSources.push_back(trimCR(strTemp));
 			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
 			iSources++;
 			cout << "file " << strTemp << ".js created\n";
 			//strTemp = "$.getScript(\".\\"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\");});\n";
-			strTemp = "$.getScript(\".\\"+strTemp+".js\");\n";
+			strTemp = "$.getScript(\".\\"+trimCR(strTemp)+".js\");\n";
 			srcflag = 0;
 		}
 		// Function
@@ -146,6 +162,8 @@ int main(int argc, char* argv[]) {
 	}
 	fileout.close();
 	for (int i = 0; i < documents.size(); i++) {
+		cout << "documents.size() block hit!\n";
+		vSources[i] = trimCR(vSources[i]);
 		char * filename = new char[vSources[i].length()+4];
 		string sFilename = vSources[i] + ".js";
 		strcpy(filename, sFilename.c_str());

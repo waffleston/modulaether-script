@@ -11,7 +11,8 @@ function returnMemes(one,two) {
 function uwotm8(m,m8) {
 	help;
 }
-$%srcdef fileone 
+$%srcdef fileone
+$%srcdef filetwo
 $%fn fileone selectMemes(one,two) {
 	//Let's figure out what the memes are.
 	console.log("one: ", one);

@@ -6,7 +6,7 @@
 #include <algorithm>
 using namespace std;
 
-const char cmd = '%'
+const char cmd = '%';
 const string cSourceDef = "%^srcdef";
 const string cFunc = "%^fn";
 const string cVar = "%^var"; 
@@ -48,18 +48,18 @@ int main(int argc, char* argv[]) {
 	string file_mae;
 	file_mae = argv[1];
 	string fn_js = file_mae.substr(0, file_mae.size() - 3) + "js";
-	char * ches = new char[file_mae.length() + 1];
+	//char * ches = new char[file_mae.length() + 1];
 	char * chjs = new char[fn_js.length() + 1];
-	strcpy(ches, file_mae.c_str());
+	//strcpy(ches, file_mae.c_str());
 	strcpy(chjs, fn_js.c_str());
-	ifstream filein(ches);
+	//ifstream filein(ches);
 	ofstream fileout(chjs);
-	if (!filein || !fileout) {
-		cout << "The requested file was not found." << endl;
+	if (!fileout) {
+		cout << "Could not create main output file." << endl;
 		return 1;
 	}
 	fileout << "/*\n * This file generated from Modulaetherschrift source.\n */\n";
-	string strTemp;
+	//string strTemp;
 	int functionflag = 0;
 	int srcflag = 0;
 	string content_core;
@@ -69,6 +69,19 @@ int main(int argc, char* argv[]) {
 	int iSources = 0;
 	int iBrackets = 0;
 	int writetodoc = 0;
+	
+	for (int a = 1; a < argc; a++) {
+		string filename;
+		filename = argv[a];
+		char * readFile = new char[filename.length() + 1];
+		strcpy(readFile, filename.c_str());
+		ifstream filein(readFile);
+		if (!filein) {
+			cout << "File " << readFile << " could not be opened." << endl;
+			return 1;
+		}
+		string strTemp;
+
 	while (filein >> strTemp) {
 		char peek_char;
 		peek_char = retChar(filein.peek());
@@ -159,6 +172,8 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		fileout << strTemp;
+	}
+		filein.close();
 	}
 	fileout.close();
 	for (int i = 0; i < documents.size(); i++) {

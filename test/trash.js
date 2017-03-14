@@ -27,4 +27,14 @@ maes_selectMemes.apply(this, arguments);
 /*hi*/
  /*
  This is broken
- */ 
+ */ // Hello there!
+ console.log('script loaded');
+ $.getScript(".\from_memes.js");
+function memesaes() { 
+if (typeof maes_memesaes == 'undefined') { 
+window.setTimeout(memesaes,100); 
+} else { 
+memesaes = maes_memesaes; 
+maes_memesaes.apply(this, arguments); 
+}
+}

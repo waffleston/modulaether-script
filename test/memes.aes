@@ -1,0 +1,8 @@
+// Hello there!
+
+console.log('script loaded');
+%^srcdef from_memes
+
+%^fn from_memes memesaes() {
+	alert('An alert has been sent.');
+}

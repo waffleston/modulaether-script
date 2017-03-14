@@ -1,12 +1,13 @@
 # modulaether-script
 Speeding up development of modular javascript applications.
 ## What is it?
-It's essentially a javascript preprocessing language, currently able to speed up the initial page load by placing non-immediate functions in another file.  These functions are then asynchronously/deferred loaded by the browser after the page renders.
+It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions are moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.
 ## Todo:
-* [ ] Allow multiple input files.
+* [x] Allow multiple input files.
 * [ ] Differentiate/Build-in optional minification/obfuscation.
   * [ ] Maintain tabs/spaces before lines.
 * [ ] Macro functionality.
   * [ ] Advanced dummy functions.
   * [ ] Expand beyond explicit function manoeuvring.
 * [ ] Syntax validation.
+

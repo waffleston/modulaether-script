@@ -6,10 +6,16 @@
 #include <algorithm>
 using namespace std;
 
-const char cmd = '%'
+const char cmd = '%';
+	// unused
 const string cSourceDef = "%^srcdef";
+	// _1_ (first argument) is an output file to be located at _1_.js
 const string cFunc = "%^fn";
-const string cVar = "%^var"; 
+	// function _2+_ <- should be in source _1_.
+const string cVar = "%^var";
+	// Unused
+const string cGSource = "%^thisfile";
+	// This entire file is raw javascript, and should be placed in source _1_.
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -45,21 +51,26 @@ string replacer (string sFn) {
 	return resultant;
 }
 int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		cout << "Modulaether-script; preprocesses .aes files to modular javascript." << endl;
+		cout << "Usage: maejs main_file [other_files...]" << endl;
+		return 1;
+	}
 	string file_mae;
 	file_mae = argv[1];
 	string fn_js = file_mae.substr(0, file_mae.size() - 3) + "js";
-	char * ches = new char[file_mae.length() + 1];
+	//char * ches = new char[file_mae.length() + 1];
 	char * chjs = new char[fn_js.length() + 1];
-	strcpy(ches, file_mae.c_str());
+	//strcpy(ches, file_mae.c_str());
 	strcpy(chjs, fn_js.c_str());
-	ifstream filein(ches);
+	//ifstream filein(ches);
 	ofstream fileout(chjs);
-	if (!filein || !fileout) {
-		cout << "The requested file was not found." << endl;
+	if (!fileout) {
+		cout << "Could not create main output file." << endl;
 		return 1;
 	}
 	fileout << "/*\n * This file generated from Modulaetherschrift source.\n */\n";
-	string strTemp;
+	//string strTemp;
 	int functionflag = 0;
 	int srcflag = 0;
 	string content_core;
@@ -69,6 +80,47 @@ int main(int argc, char* argv[]) {
 	int iSources = 0;
 	int iBrackets = 0;
 	int writetodoc = 0;
+	
+	for (int a = 1; a < argc; a++) {
+		string filename;
+		filename = argv[a];
+		char * readFile = new char[filename.length() + 1];
+		strcpy(readFile, filename.c_str());
+		ifstream filein(readFile);
+		if (!filein) {
+			cout << "File " << readFile << " could not be opened." << endl;
+			return 1;
+		}
+		string strTemp;
+
+		filein >> strTemp;
+		if (strTemp == cGSource) {
+			filein >> strTemp;
+			try {
+				for (int i = 0; i < vSources.size(); i++) {
+					if (vSources[i] == strTemp) {
+						curDocIndex = i;
+					}
+				}
+			} catch(string err) {
+				cout << "Source \"" << strTemp << "\" not defined.";
+				return 1;
+			}
+			while (filein >> strTemp) {
+				char peek_char;
+				peek_char = retChar(filein.peek());
+				// Maintain carriage returns
+				if (peek_char == 13 || peek_char == 10) {
+					strTemp += '\n';
+				}
+				documents[curDocIndex] += strTemp;
+			}
+			filein.close();
+		} else {
+			for(int b = 0; b < strTemp.size(); b++) {
+				filein.unget();
+			}
+
 	while (filein >> strTemp) {
 		char peek_char;
 		peek_char = retChar(filein.peek());
@@ -85,9 +137,9 @@ int main(int argc, char* argv[]) {
 			vSources.push_back(trimCR(strTemp));
 			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
 			iSources++;
-			cout << "file " << strTemp << ".js created\n";
-			//strTemp = "setTimeout($.getScript(\".\\"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
-			strTemp = "$.getScript(\".\\"+trimCR(strTemp)+".js\");\n";
+			cout << "file " << trimCR(strTemp) << ".js created\n";
+			//strTemp = "setTimeout($.getScript(\"./"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
+			strTemp = "$.getScript(\"./"+trimCR(strTemp)+".js\");\n";
 			srcflag = 0;
 		}
 		// Function
@@ -160,6 +212,9 @@ int main(int argc, char* argv[]) {
 		}
 		fileout << strTemp;
 	}
+		filein.close();
+	}
+	}
 	fileout.close();
 	for (int i = 0; i < documents.size(); i++) {
 		cout << "documents.size() block hit!\n";
@@ -169,7 +224,7 @@ int main(int argc, char* argv[]) {
 		strcpy(filename, sFilename.c_str());
 		ofstream fileout(filename);
 		if (!fileout) {
-			cout << vSources[i] << ".js could not be opened.";
+			cout << vSources[i] << ".js could not be created/opened.";
 			return 1;
 		}
 		fileout << documents[i];

@@ -14,8 +14,8 @@ function returnMemes(one,two) {
  function uwotm8(m,m8) {
  help;
  }
- $.getScript(".\fileone.js");
-$.getScript(".\filetwo.js");
+ $.getScript("./fileone.js");
+$.getScript("./filetwo.js");
 function selectMemes() { 
 if (typeof maes_selectMemes == 'undefined') { 
 window.setTimeout(selectMemes,100); 
@@ -27,4 +27,5 @@ maes_selectMemes.apply(this, arguments);
 /*hi*/
  /*
  This is broken
- */ 
+ */
+ $.getScript("./from_memes.js");

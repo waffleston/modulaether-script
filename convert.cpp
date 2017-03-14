@@ -6,10 +6,10 @@
 #include <algorithm>
 using namespace std;
 
-const string sSourceDef = "$%srcdef";
-const string sFunc = "$%fn";
-const string sNew = "{function}";
-const string sEnd = "$%endfn";
+const char cmd = '%'
+const string cSourceDef = "%^srcdef";
+const string cFunc = "%^fn";
+const string cVar = "%^var"; 
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -72,13 +72,13 @@ int main(int argc, char* argv[]) {
 	while (filein >> strTemp) {
 		char peek_char;
 		peek_char = retChar(filein.peek());
-		// Maintain carriage returns (windows & bsd);
-		if (peek_char == 13) {
+		// Maintain carriage returns
+		if (peek_char == 13 || peek_char == 10) {
 			strTemp += '\n';
 		}
 
 		// Source Definition
-		if (strTemp == sSourceDef) {
+		if (strTemp == cSourceDef) {
 			strTemp = "";
 			srcflag = 1;
 		} else if (srcflag == 1) {
@@ -86,12 +86,12 @@ int main(int argc, char* argv[]) {
 			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
 			iSources++;
 			cout << "file " << strTemp << ".js created\n";
-			//strTemp = "$.getScript(\".\\"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\");});\n";
+			//strTemp = "setTimeout($.getScript(\".\\"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
 			strTemp = "$.getScript(\".\\"+trimCR(strTemp)+".js\");\n";
 			srcflag = 0;
 		}
 		// Function
-		else if (strTemp == sFunc/* && functionflag != 1*/) {
+		else if (strTemp == cFunc/* && functionflag != 1*/) {
 			//cout << strTemp;
 			strTemp = "";
 			functionflag = 1;

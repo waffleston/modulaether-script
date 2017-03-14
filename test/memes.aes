@@ -1,8 +1,8 @@
-// Hello there!
+%^thisfile from_memes
 
 console.log('script loaded');
-%^srcdef from_memes
+//%^srcdef from_memes
 
-%^fn from_memes memesaes() {
+function memesaes() {
 	alert('An alert has been sent.');
 }

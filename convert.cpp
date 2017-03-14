@@ -132,9 +132,9 @@ int main(int argc, char* argv[]) {
 			vSources.push_back(trimCR(strTemp));
 			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
 			iSources++;
-			cout << "file " << strTemp << ".js created\n";
-			//strTemp = "setTimeout($.getScript(\".\\"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
-			strTemp = "$.getScript(\".\\"+trimCR(strTemp)+".js\");\n";
+			cout << "file " << trimCR(strTemp) << ".js created\n";
+			//strTemp = "setTimeout($.getScript(\"./"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
+			strTemp = "$.getScript(\"./"+trimCR(strTemp)+".js\");\n";
 			srcflag = 0;
 		}
 		// Function
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]) {
 		strcpy(filename, sFilename.c_str());
 		ofstream fileout(filename);
 		if (!fileout) {
-			cout << vSources[i] << ".js could not be opened.";
+			cout << vSources[i] << ".js could not be created/opened.";
 			return 1;
 		}
 		fileout << documents[i];

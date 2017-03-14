@@ -7,9 +7,15 @@
 using namespace std;
 
 const char cmd = '%';
+	// unused
 const string cSourceDef = "%^srcdef";
+	// _1_ (first argument) is an output file to be located at _1_.js
 const string cFunc = "%^fn";
-const string cVar = "%^var"; 
+	// function _2+_ <- should be in source _1_.
+const string cVar = "%^var";
+	// Unused
+const string cGSource = "%^thisfile";
+	// This entire file is raw javascript, and should be placed in source _1_.
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -81,6 +87,34 @@ int main(int argc, char* argv[]) {
 			return 1;
 		}
 		string strTemp;
+
+		filein >> strTemp;
+		if (strTemp == cGSource) {
+			filein >> strTemp;
+			try {
+				for (int i = 0; i < vSources.size(); i++) {
+					if (vSources[i] == strTemp) {
+						curDocIndex = i;
+					}
+				}
+			} catch(string err) {
+				cout << "Source \"" << strTemp << "\" not defined.";
+				return 1;
+			}
+			while (filein >> strTemp) {
+				char peek_char;
+				peek_char = retChar(filein.peek());
+				// Maintain carriage returns
+				if (peek_char == 13 || peek_char == 10) {
+					strTemp += '\n';
+				}
+				documents[curDocIndex] += strTemp;
+			}
+			filein.close();
+		} else {
+			for(int b = 0; b < strTemp.size(); b++) {
+				filein.unget();
+			}
 
 	while (filein >> strTemp) {
 		char peek_char;
@@ -174,6 +208,7 @@ int main(int argc, char* argv[]) {
 		fileout << strTemp;
 	}
 		filein.close();
+	}
 	}
 	fileout.close();
 	for (int i = 0; i < documents.size(); i++) {

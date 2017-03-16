@@ -5,7 +5,10 @@ It's essentially a javascript preprocessing language, designed to improve load t
 ## Todo:
 * [x] Allow multiple input files.
 * [ ] Differentiate/Build-in optional minification/obfuscation.
-  * [ ] Maintain tabs/spaces before lines.
+  * [x] Maintain tabs/spaces before lines.
+    * [ ] For minification, optimize whitespace.
+  * [ ] Detect/remove single-line comments.
+  * [ ] Detect/Remove multi-line comments.
 * [ ] Macro functionality.
   * [ ] Advanced dummy functions.
   * [ ] Expand beyond explicit function manoeuvring.

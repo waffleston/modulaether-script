@@ -21,18 +21,26 @@ char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
 	return inbound;
 }
-
 #define peekChar() \
 	do { \
-	char peek = filein.peek(); \
-	if (peek == ' ') { \
-		next_char = filein.get(); \
-		next_char = filein.get(); \
-		filein.unget(); \
-		filein.unget(); \
-	} else { \
-		next_char = peek; \
-	} \
+		int nextcharcounter = 0; \
+		while (true) { \
+			next_char = filein.peek(); \
+			if (next_char == ' ') { \
+				next_char = filein.get(); \
+				nextcharcounter++; \
+				next_char = filein.get(); \
+				nextcharcounter++; \
+				if (next_char != ' ') { \
+					break; \
+				} \
+			} else { \
+				break; \
+			} \
+		} \
+		for (int i = 0; i < nextcharcounter; i++) { \
+			filein.unget(); \
+		} \
 	} while (0)
 
 

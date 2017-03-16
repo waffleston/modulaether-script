@@ -21,6 +21,21 @@ char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
 	return inbound;
 }
+
+#define peekChar() \
+	do { \
+	char peek = filein.peek(); \
+	if (peek == ' ') { \
+		next_char = filein.get(); \
+		next_char = filein.get(); \
+		filein.unget(); \
+		filein.unget(); \
+	} else { \
+		next_char = peek; \
+	} \
+	} while (0)
+
+
 string trimCR(string inbound) {
 	inbound.erase(inbound.find_last_not_of("\n\r")+1);
 	return inbound;
@@ -107,10 +122,10 @@ int main(int argc, char* argv[]) {
 				return 1;
 			}
 			while (filein >> strTemp) {
-				char peek_char;
-				peek_char = retChar(filein.peek());
+				char next_char;
+				peekChar();
 				// Maintain carriage returns
-				if (peek_char == 13 || peek_char == 10) {
+				if (next_char == 13 || next_char == 10) {
 					strTemp += '\n';
 				}
 				strTemp += " ";
@@ -123,10 +138,10 @@ int main(int argc, char* argv[]) {
 			}
 
 	while (filein >> strTemp) {
-		char peek_char;
-		peek_char = retChar(filein.peek());
+		char next_char;
+		peekChar();
 		// Maintain carriage returns
-		if (peek_char == 13 || peek_char == 10) {
+		if (next_char == 13 || next_char == 10) {
 			strTemp += '\n';
 		}
 

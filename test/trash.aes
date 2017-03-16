@@ -26,6 +26,7 @@ function uwotm8(m,m8) {
 /*hi*/
 
 /*
-	This is broken
+	Tabs are now recognized.
+	So are        multiple spaces!
 */
 %^srcdef from_memes

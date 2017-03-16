@@ -2,20 +2,20 @@
  * This file generated from Modulaetherschrift source.
  */
 function returnMemes(one,two) {
- //We have some memes here.
- var one = $('#body').value;
- var two = $('#head').value;
- selectMemes()
- var shrubs = {
- ha: 1,
- h2: 2
- }
- }
- function uwotm8(m,m8) {
- help;
- }
- $.getScript("./fileone.js");
-$.getScript("./filetwo.js");
+	//We have some memes here.
+	var one = $('#body').value;
+	var two = $('#head').value;
+	selectMemes()
+	var shrubs = {
+		ha: 1,
+		h2: 2
+	}
+}
+function uwotm8(m,m8) {
+	help;
+}
+setTimeout($.getScript("./fileone.js"),5000);
+setTimeout($.getScript("./filetwo.js"),5000);
 function selectMemes() { 
 if (typeof maes_selectMemes == 'undefined') { 
 window.setTimeout(selectMemes,100); 
@@ -25,7 +25,8 @@ maes_selectMemes.apply(this, arguments);
 }
 }
 /*hi*/
- /*
- This is broken
- */
- $.getScript("./from_memes.js");
+/*
+	Tabs are now recognized.
+	So are        multiple spaces!
+*/
+setTimeout($.getScript("./from_memes.js"),5000);

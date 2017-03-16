@@ -21,17 +21,17 @@ char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
 	return inbound;
 }
-#define peekChar() \
+#define peekChar(up_char) \
 	do { \
 		int nextcharcounter = 0; \
 		while (true) { \
-			next_char = filein.peek(); \
-			if (next_char == ' ') { \
-				next_char = filein.get(); \
+			up_char = filein.peek(); \
+			if (up_char == ' ') { \
+				up_char = filein.get(); \
 				nextcharcounter++; \
-				next_char = filein.get(); \
+				up_char = filein.get(); \
 				nextcharcounter++; \
-				if (next_char != ' ') { \
+				if (up_char != ' ') { \
 					break; \
 				} \
 			} else { \
@@ -41,6 +41,44 @@ char retChar(char inbound) {
 		for (int i = 0; i < nextcharcounter; i++) { \
 			filein.unget(); \
 		} \
+	} while (0)
+
+#define prevChar(tResult) \
+	do { \
+		if (filein.tellg() <= tResult.size()) { \
+			break; \
+			cout << "Broke"; \
+		} \
+		int prevcharcounter = 0; \
+		int isLastWord = 1; \
+		char next_char; \
+		peekChar(next_char); \
+		if (next_char == 13 || next_char == 10) { \
+			isLastWord = 2; \
+		} \
+		for (int i = isLastWord; i < tResult.size(); i++) { \
+			filein.unget(); \
+			prevcharcounter++; \
+		} \
+		string pre_word; \
+		char prev_char; \
+		while (true) { \
+			filein.unget(); \
+			prevcharcounter++; \
+			filein.unget(); \
+			prev_char = filein.get(); \
+			/*cout << "Character encountered: " << prev_char << endl;*/ \
+			if (prev_char != ' ' && prev_char != '\t') { \
+				/*cout << "Char encountered: " << prev_char << endl;*/ \
+				break; \
+			} else { \
+				pre_word += prev_char; \
+			} \
+		} \
+		for (int i = 0; i < prevcharcounter; i++) { \
+			filein.get(); \
+		} \
+		tResult = pre_word + tResult; \
 	} while (0)
 
 
@@ -131,12 +169,12 @@ int main(int argc, char* argv[]) {
 			}
 			while (filein >> strTemp) {
 				char next_char;
-				peekChar();
+				peekChar(next_char);
 				// Maintain carriage returns
 				if (next_char == 13 || next_char == 10) {
 					strTemp += '\n';
 				}
-				strTemp += " ";
+				prevChar(strTemp);
 				documents[curDocIndex] += strTemp;
 			}
 			filein.close();
@@ -147,7 +185,7 @@ int main(int argc, char* argv[]) {
 
 	while (filein >> strTemp) {
 		char next_char;
-		peekChar();
+		peekChar(next_char);
 		// Maintain carriage returns
 		if (next_char == 13 || next_char == 10) {
 			strTemp += '\n';
@@ -161,9 +199,9 @@ int main(int argc, char* argv[]) {
 			vSources.push_back(trimCR(strTemp));
 			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
 			iSources++;
-			cout << "file " << trimCR(strTemp) << ".js created\n";
+			cout << "External file " << trimCR(strTemp) << ".js created\n";
 			//strTemp = "setTimeout($.getScript(\"./"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
-			strTemp = "$.getScript(\"./"+trimCR(strTemp)+".js\");\n";
+			strTemp = "setTimeout($.getScript(\"./"+trimCR(strTemp)+".js\"),5000);\n";
 			srcflag = 0;
 		}
 		// Function
@@ -193,7 +231,7 @@ int main(int argc, char* argv[]) {
 			//strTemp += " ";
 			//strTemp = "";
 		} else if (functionflag == 2) {
-			strTemp += " ";
+			//prevChar(strTemp);
 			documents[curDocIndex] += strTemp;
 			iBrackets += count(strTemp.begin(), strTemp.end(), '{');
 			iBrackets -= count(strTemp.begin(), strTemp.end(), '}');
@@ -211,7 +249,7 @@ int main(int argc, char* argv[]) {
 				strTemp = "";
 			}
 		} else if (functionflag == 3) {
-			strTemp += " ";
+			prevChar(strTemp);
 			
 			iBrackets += count(strTemp.begin(), strTemp.end(), '{');
 			iBrackets -= count(strTemp.begin(), strTemp.end(), '}');
@@ -229,7 +267,7 @@ int main(int argc, char* argv[]) {
 			documents[curDocIndex] += strTemp;
 			strTemp = "";
 		} else {
-			strTemp += " ";
+			prevChar(strTemp);
 			if (filein.peek() == '\n') {
 				strTemp += "\n";
 			}
@@ -241,7 +279,7 @@ int main(int argc, char* argv[]) {
 	}
 	fileout.close();
 	for (int i = 0; i < documents.size(); i++) {
-		cout << "documents.size() block hit!\n";
+		//cout << "documents.size() block hit!\n";
 		vSources[i] = trimCR(vSources[i]);
 		char * filename = new char[vSources[i].length()+4];
 		string sFilename = vSources[i] + ".js";

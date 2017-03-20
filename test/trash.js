@@ -14,8 +14,8 @@ function returnMemes(one,two) {
 function uwotm8(m,m8) {
 	help;
 }
-setTimeout($.getScript("./fileone.js"),5000);
-setTimeout($.getScript("./filetwo.js"),5000);
+setTimeout($.getScript("./fileone.js"),3000);
+setTimeout($.getScript("./filetwo.js"),3000);
 function selectMemes() { 
 if (typeof maes_selectMemes == 'undefined') { 
 window.setTimeout(selectMemes,100); 
@@ -29,4 +29,4 @@ maes_selectMemes.apply(this, arguments);
 	Tabs are now recognized.
 	So are        multiple spaces!
 */
-setTimeout($.getScript("./from_memes.js"),5000);
+setTimeout($.getScript("/HTML/core/from_memes.js"),3000);

@@ -11,6 +11,7 @@ function returnMemes(one,two) {
 function uwotm8(m,m8) {
 	help;
 }
+%^defer 3000
 %^srcdef fileone
 %^srcdef filetwo
 %^fn fileone selectMemes(one,two) {
@@ -29,4 +30,5 @@ function uwotm8(m,m8) {
 	Tabs are now recognized.
 	So are        multiple spaces!
 */
+%^root /HTML/core/
 %^srcdef from_memes

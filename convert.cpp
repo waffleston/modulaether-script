@@ -16,6 +16,10 @@ const string cVar = "%^var";
 	// Unused
 const string cGSource = "%^thisfile";
 	// This entire file is raw javascript, and should be placed in source _1_.
+const string cDefer = "%^defer";
+	// Delay all future non-main js files by _1_ milliseconds, omitted = default "5000".
+const string cRoot = "%^root";
+	// _1_ is the root directory for all future files, omitted = default "./".
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -134,6 +138,10 @@ int main(int argc, char* argv[]) {
 	//string strTemp;
 	int functionflag = 0;
 	int srcflag = 0;
+	int deferflag = 0;
+	int rootflag = 0;
+	string sDeferralLength = "5000";
+	string sRoot = "./";
 	string content_core;
 	vector<string> documents;
 	vector<string> vSources;
@@ -201,9 +209,30 @@ int main(int argc, char* argv[]) {
 			iSources++;
 			cout << "External file " << trimCR(strTemp) << ".js created\n";
 			//strTemp = "setTimeout($.getScript(\"./"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";
-			strTemp = "setTimeout($.getScript(\"./"+trimCR(strTemp)+".js\"),5000);\n";
+			strTemp = "setTimeout($.getScript(\""+trimCR(sRoot)+trimCR(strTemp)+".js\"),"+trimCR(sDeferralLength)+");\n";
 			srcflag = 0;
 		}
+		// Deferral
+		else if (strTemp == cDefer) {
+			strTemp = "";
+			deferflag = 1;
+		} else if (deferflag == 1) {
+			sDeferralLength = strTemp;
+			deferflag = 0;
+			strTemp = "";
+		}
+
+		// Root
+		else if (strTemp == cRoot) {
+			strTemp = "";
+			rootflag = 1;
+		} else if (rootflag == 1) {
+			sRoot = strTemp;
+			rootflag = 0;
+			strTemp = "";
+		}
+
+
 		// Function
 		else if (strTemp == cFunc/* && functionflag != 1*/) {
 			//cout << strTemp;

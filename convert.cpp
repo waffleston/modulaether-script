@@ -30,7 +30,7 @@ char retChar(char inbound) {
 		int nextcharcounter = 0; \
 		while (true) { \
 			up_char = filein.peek(); \
-			if (up_char == ' ') { \
+			if (up_char == ' ' || up_char == '\t') { \
 				up_char = filein.get(); \
 				nextcharcounter++; \
 				up_char = filein.get(); \

@@ -196,6 +196,7 @@ int main(int argc, char* argv[]) {
 		peekChar(next_char);
 		// Maintain carriage returns
 		if (next_char == 13 || next_char == 10) {
+			strTemp = trimCR(strTemp);
 			strTemp += '\n';
 		}
 
@@ -291,14 +292,14 @@ int main(int argc, char* argv[]) {
 				return 1;
 			}
 			if (filein.peek() == '\n') {
-				strTemp += "\n";
+				//strTemp += "\n";
 			}
 			documents[curDocIndex] += strTemp;
 			strTemp = "";
 		} else {
 			prevChar(strTemp);
 			if (filein.peek() == '\n') {
-				strTemp += "\n";
+				//strTemp += "\n";
 			}
 		}
 		fileout << strTemp;

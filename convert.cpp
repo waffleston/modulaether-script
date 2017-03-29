@@ -91,6 +91,12 @@ string trimCR(string inbound) {
 	return inbound;
 }
 
+string getTime() {
+	time_t result;
+	time(&result);
+	return asctime(localtime(&result));
+}
+
 string replacer (string sFn) {
 	string resultant = "";
 	string rFn;
@@ -134,7 +140,7 @@ int main(int argc, char* argv[]) {
 		cout << "Could not create main output file." << endl;
 		return 1;
 	}
-	fileout << "/*\n * This file generated from Modulaetherschrift source.\n */\n";
+	fileout << "/*\n * This file generated from modulaether-script source.\n * Generated at " + getTime() + " */\n";
 	//string strTemp;
 	int functionflag = 0;
 	int srcflag = 0;
@@ -206,7 +212,7 @@ int main(int argc, char* argv[]) {
 			srcflag = 1;
 		} else if (srcflag == 1) {
 			vSources.push_back(trimCR(strTemp));
-			documents.push_back("/**\n * This file generated from Modulaetherschrift source.\n**/\n");
+			documents.push_back("/*\n * This file generated from modulaether-script source.\n * Generated at " + getTime() + " */\n");
 			iSources++;
 			cout << "External file " << trimCR(strTemp) << ".js created\n";
 			//strTemp = "setTimeout($.getScript(\"./"+strTemp+".js\").fail(function(){console.error(\"$.get failed on "+strTemp+".js!\")}), 5000);\n";

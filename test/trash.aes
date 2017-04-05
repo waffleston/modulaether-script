@@ -32,3 +32,5 @@ function uwotm8(m,m8) {
 */
 %^root /HTML/core/
 %^srcdef from_memes
+
+console.log(" %^insert inserted.txt ");

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 using namespace std;
 
 const char cmd = '%';
@@ -15,11 +16,13 @@ const string cFunc = "%^fn";
 const string cVar = "%^var";
 	// Unused
 const string cGSource = "%^thisfile";
-	// This entire file is raw javascript, and should be placed in source _1_.
+	// This entire file is raw javascript, and should be appended to source _1_.
 const string cDefer = "%^defer";
 	// Delay all future non-main js files by _1_ milliseconds, omitted = default "5000".
 const string cRoot = "%^root";
-	// _1_ is the root directory for all future files, omitted = default "./".
+	// _1_ is the web root directory for all future files, omitted = default "./".
+const string cInsert = "%^insert";
+	// _1_ is a file to be raw inserted at that line.
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -146,6 +149,7 @@ int main(int argc, char* argv[]) {
 	int srcflag = 0;
 	int deferflag = 0;
 	int rootflag = 0;
+	int insertflag = 0;
 	string sDeferralLength = "5000";
 	string sRoot = "./";
 	string content_core;
@@ -302,6 +306,15 @@ int main(int argc, char* argv[]) {
 			}
 			documents[curDocIndex] += strTemp;
 			strTemp = "";
+		} else if (strTemp == cInsert) {
+			strTemp = "";
+			insertflag = 1;
+		} else if (insertflag == 1) {
+			ifstream t(strTemp.c_str());
+			stringstream buffer;
+			buffer << t.rdbuf();
+			strTemp = buffer.str();
+			insertflag = 0;
 		} else {
 			prevChar(strTemp);
 			if (filein.peek() == '\n') {

@@ -1,6 +1,6 @@
 /*
  * This file generated from modulaether-script source.
- * Generated at Wed Mar 29 07:32:40 2017
+ * Generated at Wed Apr  5 09:46:26 2017
  */
 function returnMemes(one,two) {
 	//We have some memes here.
@@ -31,3 +31,5 @@ maes_selectMemes.apply(this, arguments);
 	So are        multiple spaces!
 */
 setTimeout($.getScript("/HTML/core/from_memes.js"),3000);
+console.log("This string was pulled from inserted.txt!
+ ");

@@ -310,7 +310,7 @@ int main(int argc, char* argv[]) {
 			strTemp = "";
 			insertflag = 1;
 		} else if (insertflag == 1) {
-			ifstream t(strTemp.c_str());
+			ifstream t(trimCR(strTemp).c_str());
 			stringstream buffer;
 			buffer << t.rdbuf();
 			strTemp = buffer.str();

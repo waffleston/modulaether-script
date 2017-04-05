@@ -1,1 +1,4 @@
-This string was pulled from inserted.txt!
+This string was pulled from inserted.txt! \
+";
+
+var injection = "hello \

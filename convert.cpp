@@ -217,7 +217,7 @@ int main(int argc, char* argv[]) {
 		// Line comment locator
 		// --
 		// Line comments have lower priority than block comments.
-		if (strTemp.find("//") != string::npos) {
+		if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos) {
 			if (removeComments == 1) {
 				commentflag=1;
 				strTemp = "";

@@ -4,6 +4,7 @@ Speeding up development of modular javascript applications.
 It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions are moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.
 ## Todo:
 * [x] Allow multiple input files.
+  * [x] in-file command to insert files.
 * [ ] Differentiate/Build-in optional minification/obfuscation.
   * [x] Maintain tabs/spaces before lines.
     * [ ] For minification, optimize whitespace.
@@ -14,3 +15,73 @@ It's essentially a javascript preprocessing language, designed to improve load t
   * [ ] Expand beyond explicit function manoeuvring.
 * [ ] Syntax validation.
 
+## Commands
+Commands are lines of code prefixed with `%^` that tell the compiler to do something.  
+Format: `%^COMMAND_NAME [1] [2] [3]...`
+Where [1] is the first argument and so on.
+### Table of Contents
+* srcdef
+* fn
+* thisfile
+* defer
+* root
+* insert
+### `%^srcdef [1]`
+[1] is an output file to be located at [1].js Ex:
+```javascript
+%^srcdef extrafileone
+```
+### `%^fn [1] [2+]`
+[1] is target file, [2+] is the function. Ex:
+```javascript
+%^fn extrafileone alerter(one, two) {
+        if (one%two == 0) {
+                console.log(two);
+        } else if (one == 90) {
+                console.log(one);
+        }
+}
+```
+### `%^thisfile [1]`
+[1] is the output file that this entire file should be placed in without processing. Ex:
+```javascript
+%^thisfile extrafileone
+// Generic javascript after here.
+```
+### `%^defer [1]`
+[1] is the number of milliseconds to wait before initiating async load of extra js files. Ex:
+```javascript
+%^defer 1000
+%^srcdef extrafiletwo
+%^srcdef extrafilethree
+%^defer 2000
+%^srcdef extrafilefour
+```
+### `%^root [1]`
+[1] is the uri path to the location the source will be on the webserver. Ex:
+```javascript
+%^root /HTML/core/
+%^srcdef extrafilefive
+```
+### `%^insert [1]`
+[1] is the path to a local file that should be inserted here. Ex:  
+main file:
+```javascript
+function hi(one) {
+        // Insert the macro
+        %^insert macro.js
+}
+```
+macro.js:
+```javascript
+console.log('Hello, '+one);
+i++;
+```
+result:
+```javascript
+function hi(one) {
+        // insert the macro
+        console.log('hello, '+one);
+        i++;
+}
+```

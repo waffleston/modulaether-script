@@ -15,8 +15,8 @@ It's essentially a javascript preprocessing language, designed to improve load t
   * [ ] Expand beyond explicit function manoeuvring.
 * [ ] Syntax validation.
 
-## Commands
-Commands are lines of code prefixed with `%^` that tell the compiler to do something.  
+## Instruction Reference
+Instructions are lines of code prefixed with `%^` that tell the compiler to do something.  
 Format: `%^COMMAND_NAME [1] [2] [3]...`
 Where [1] is the first argument and so on.
 ### Table of Contents

@@ -217,13 +217,14 @@ int main(int argc, char* argv[]) {
 		// Line comment locator
 		// --
 		// Line comments have lower priority than block comments.
-		// --
-		// This prevents modulaether from being stowed away in
-		// comments, which is probably a good thing and should be
-		// adapted to do the same in regular mode.
-		if (strTemp.find("//") != string::npos && removeComments == 1) {
-			commentflag=1;
-			strTemp = "";
+		if (strTemp.find("//") != string::npos) {
+			if (removeComments == 1) {
+				commentflag=1;
+				strTemp = "";
+			} else {
+				commentflag=4;
+				prevChar(strTemp);
+			}
 		}
 		cout << commentflag;
 		if (commentflag == 1) {
@@ -232,11 +233,15 @@ int main(int argc, char* argv[]) {
 				commentflag = 0;
 			}
 			
+		} else if (commentflag == 4) {
+			prevChar(strTemp);
+			if (next_char == 13 || next_char == 10) {
+				commentflag = 0;
+			}
 		}
-
 		
 		// Comments
-		if (strTemp == cComment) {
+		else if (strTemp == cComment) {
 			strTemp = "";
 			commentflag=2;
 		} else if (commentflag == 2 && trimCR(strTemp)=="off") {
@@ -255,7 +260,7 @@ int main(int argc, char* argv[]) {
 
 
 		// Source Definition
-		if (strTemp == cSourceDef) {
+		else if (strTemp == cSourceDef) {
 			strTemp = "";
 			srcflag = 1;
 		} else if (srcflag == 1) {
@@ -289,7 +294,7 @@ int main(int argc, char* argv[]) {
 
 
 		// Function
-		else if (strTemp == cFunc/* && functionflag != 1*/) {
+		if (strTemp == cFunc/* && functionflag != 1*/) {
 			//cout << strTemp;
 			strTemp = "";
 			functionflag = 1;

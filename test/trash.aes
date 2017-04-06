@@ -1,6 +1,13 @@
 // Hello, there!
 %^comments off
 // This comment cannot be seen!
+// %^comments on
+// Still off.
+%^comments on
+// Now you can see them (again)!
+// %^comments off
+// Now you can see the above instruction did not execute.
+%^comments off
 function returnMemes(one,two) {
 	//We have some memes here.
 	var one = $('#body').value;

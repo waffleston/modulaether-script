@@ -8,7 +8,7 @@ It's essentially a javascript preprocessing language, designed to improve load t
 * [ ] Differentiate/Build-in optional minification/obfuscation.
   * [x] Maintain tabs/spaces before lines.
     * [ ] For minification, optimize whitespace.
-  * [ ] Detect/remove single-line comments.
+  * [x] Detect/remove single-line comments.
   * [ ] Detect/Remove multi-line comments.
 * [ ] Macro functionality.
   * [ ] Advanced dummy functions.
@@ -84,4 +84,15 @@ function hi(one) {
         console.log('hello, '+one);
         i++;
 }
+```
+### `%^comments [off/on]`
+Ex:
+```javascript
+%^comments off
+// You can't see this.
+%^comments on
+// This is visible.
+// BUT instructions are ignored regardless
+// %^comments off
+// I'm still visible.
 ```

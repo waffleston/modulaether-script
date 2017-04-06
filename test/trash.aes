@@ -1,3 +1,6 @@
+// Hello, there!
+%^comments off
+// This comment cannot be seen!
 function returnMemes(one,two) {
 	//We have some memes here.
 	var one = $('#body').value;

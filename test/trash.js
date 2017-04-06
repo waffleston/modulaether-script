@@ -1,9 +1,9 @@
 /*
  * This file generated from modulaether-script source.
- * Generated at Wed Apr  5 10:30:02 2017
+ * Generated at Thu Apr  6 10:25:56 2017
  */
+// Hello, there!
 function returnMemes(one,two) {
-	//We have some memes here.
 	var one = $('#body').value;
 	var two = $('#head').value;
 	selectMemes()

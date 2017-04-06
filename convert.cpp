@@ -23,6 +23,8 @@ const string cRoot = "%^root";
 	// _1_ is the web root directory for all future files, omitted = default "./".
 const string cInsert = "%^insert";
 	// _1_ is a file to be raw inserted at that line.
+const string cComment = "%^comments";
+	// _1_ off turns comments off, on turns them (back) on.
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -121,7 +123,7 @@ string replacer (string sFn) {
 	""+rFn+" = maes_"+rFn+"; \n"
 	"maes_"+rFn+".apply(this, arguments); \n"
 	"}\n}\n";
-	cout << "Remote function created: "+rFn+"\n";
+	//cout << "Remote function created: "+rFn+"\n";
 	return resultant;
 }
 int main(int argc, char* argv[]) {
@@ -150,6 +152,8 @@ int main(int argc, char* argv[]) {
 	int deferflag = 0;
 	int rootflag = 0;
 	int insertflag = 0;
+	int removeComments = 0;
+	int commentflag = 0;
 	string sDeferralLength = "5000";
 	string sRoot = "./";
 	string content_core;
@@ -210,6 +214,46 @@ int main(int argc, char* argv[]) {
 			strTemp += '\n';
 		}
 
+		// Line comment locator
+		// --
+		// Line comments have lower priority than block comments.
+		// --
+		// This prevents modulaether from being stowed away in
+		// comments, which is probably a good thing and should be
+		// adapted to do the same in regular mode.
+		if (strTemp.find("//") != string::npos && removeComments == 1) {
+			commentflag=1;
+			strTemp = "";
+		}
+		cout << commentflag;
+		if (commentflag == 1) {
+			strTemp = "";
+			if (next_char == 13 || next_char == 10) {
+				commentflag = 0;
+			}
+			
+		}
+
+		
+		// Comments
+		if (strTemp == cComment) {
+			strTemp = "";
+			commentflag=2;
+		} else if (commentflag == 2 && trimCR(strTemp)=="off") {
+			strTemp = "";
+			commentflag = 0;
+			removeComments = 1;
+		} else if (commentflag == 2 && trimCR(strTemp) == "on") {
+			strTemp = "";
+			commentflag = 0;
+			removeComments = 0;
+		} else if (commentflag == 2) {
+			cout << "Comments had an invalid argument: " << strTemp << endl;
+			strTemp = "";
+			commentflag = 0;
+		}
+
+
 		// Source Definition
 		if (strTemp == cSourceDef) {
 			strTemp = "";
@@ -259,7 +303,7 @@ int main(int argc, char* argv[]) {
 					}
 				}
 			} catch(string err) {
-				cout << "Source \"" << strTemp << "\" not defined.";
+				//cout << "Source \"" << strTemp << "\" not defined.";
 				return 1;
 			}
 			//cout << "function created in " << strTemp << ": ";

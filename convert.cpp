@@ -226,11 +226,12 @@ int main(int argc, char* argv[]) {
 				prevChar(strTemp);
 			}
 		}
-		cout << commentflag;
+		//cout << commentflag;
 		if (commentflag == 1) {
 			strTemp = "";
 			if (next_char == 13 || next_char == 10) {
 				commentflag = 0;
+				strTemp = "\n";
 			}
 			
 		} else if (commentflag == 4) {

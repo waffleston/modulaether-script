@@ -19,13 +19,14 @@ It's essentially a javascript preprocessing language, designed to improve load t
 Instructions are lines of code prefixed with `%^` that tell the compiler to do something.  
 Format: `%^COMMAND_NAME [1] [2] [3]...`
 Where [1] is the first argument and so on.
-### Table of Contents
-* srcdef
-* fn
-* thisfile
-* defer
-* root
-* insert
+### List of Instructions
+* [srcdef](#srcdef-1)
+* [fn](#fn-1-2)
+* [thisfile](#thisfile-1)
+* [defer](#defer-1)
+* [root](#root-1)
+* [insert](#insert-1)
+* [comments](#comments-offon)
 ### `%^srcdef [1]`
 [1] is an output file to be located at [1].js Ex:
 ```javascript

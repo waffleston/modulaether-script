@@ -8,6 +8,15 @@
 // %^comments off
 // Now you can see the above instruction did not execute.
 %^comments off
+
+"Line comment variations";
+var line1 = function(){}//comment here mates.
+var line2 = function(){} //comment here mates.
+var line3 = function(){}// Comment here mates.
+var line4 = function(){} //.
+var line5 = function(){} //
+var line6 = function(){} //hello
+
 function returnMemes(one,two) {
 	//We have some memes here.
 	var one = $('#body').value;

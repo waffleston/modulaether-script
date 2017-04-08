@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <ctime> // Visual C++ fix.
 using namespace std;
 
 const char cmd = '%';
@@ -217,17 +218,25 @@ int main(int argc, char* argv[]) {
 		// Line comment locator
 		// --
 		// Line comments have lower priority than block comments.
+		int isNotCommentTag = 0;
 		if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos) {
 			if (removeComments == 1) {
 				commentflag=1;
-				strTemp = "";
+				prevChar(strTemp);
+				int endStrTemp = strTemp.find("//");
+				strTemp = strTemp.substr(0,endStrTemp); // Trim at the "//" location, instead of erasing it.
+				//strTemp = "";
+				isNotCommentTag = 1;
+				if (next_char == 13 || next_char == 10) {
+					commentflag = 0;
+					strTemp = "\n";
+				}
 			} else {
 				commentflag=4;
 				prevChar(strTemp);
 			}
 		}
-		//cout << commentflag;
-		if (commentflag == 1) {
+		if (commentflag == 1 && isNotCommentTag == 0) {
 			strTemp = "";
 			if (next_char == 13 || next_char == 10) {
 				commentflag = 0;

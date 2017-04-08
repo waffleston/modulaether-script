@@ -118,12 +118,12 @@ string replacer (string sFn) {
 		return "";
 	}
 	resultant += rFn+"() { \n"
-	"if (typeof maes_"+rFn+" == 'undefined') { \n"
-	"window.setTimeout("+rFn+",100); \n"
-	"} else { \n"
-	""+rFn+" = maes_"+rFn+"; \n"
-	"maes_"+rFn+".apply(this, arguments); \n"
-	"}\n}\n";
+	"\tif (typeof maes_"+rFn+" == 'undefined') { \n"
+	"\t\twindow.setTimeout("+rFn+",100); \n"
+	"\t} else { \n"
+	"\t\t"+rFn+" = maes_"+rFn+"; \n"
+	"\t\tmaes_"+rFn+".apply(this, arguments); \n"
+	"\t}\n}\n";
 	//cout << "Remote function created: "+rFn+"\n";
 	return resultant;
 }

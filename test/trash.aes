@@ -16,6 +16,7 @@ var line3 = function(){}// Comment here mates.
 var line4 = function(){} //.
 var line5 = function(){} //
 var line6 = function(){} //hello
+var line7 = function(){}//
 
 function returnMemes(one,two) {
 	//We have some memes here.

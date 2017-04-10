@@ -229,7 +229,7 @@ int main(int argc, char* argv[]) {
 				isNotCommentTag = 1;
 				if (next_char == 13 || next_char == 10) {
 					commentflag = 0;
-					strTemp = "\n";
+					strTemp += "\n";
 				}
 			} else {
 				commentflag=4;

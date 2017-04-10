@@ -27,6 +27,9 @@ const string cInsert = "%^insert";
 const string cComment = "%^comments";
 	// _1_ off turns comments off, on turns them (back) on.
 
+const string bcStart = "/**\n";
+const string bcEnd = "**/\n";
+
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
 	return inbound;
@@ -155,6 +158,7 @@ int main(int argc, char* argv[]) {
 	int insertflag = 0;
 	int removeComments = 0;
 	int commentflag = 0;
+	int blockcommentflag = 0;
 	string sDeferralLength = "5000";
 	string sRoot = "./";
 	string content_core;
@@ -215,18 +219,32 @@ int main(int argc, char* argv[]) {
 			strTemp += '\n';
 		}
 
+		// Block comments (Documentation comments)
+		if (strTemp == bcStart) {
+			if (removeComments == 1) {
+				strTemp = "";
+				blockcommentflag = 1;
+			}
+		} else if (blockcommentflag == 1) {
+			if (strTemp == bcEnd) {
+				blockcommentflag = 0;
+				strTemp = "";
+			} else {
+				strTemp = "";
+			}
+		}
+
 		// Line comment locator
 		// --
 		// Line comments have lower priority than block comments.
-		int isNotCommentTag = 0;
-		if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos) {
+		else if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos) {
 			if (removeComments == 1) {
 				commentflag=1;
 				prevChar(strTemp);
 				int endStrTemp = strTemp.find("//");
 				strTemp = strTemp.substr(0,endStrTemp); // Trim at the "//" location, instead of erasing it.
 				//strTemp = "";
-				isNotCommentTag = 1;
+				//isNotCommentTag = 1;
 				if (next_char == 13 || next_char == 10) {
 					commentflag = 0;
 					strTemp += "\n";
@@ -234,9 +252,11 @@ int main(int argc, char* argv[]) {
 			} else {
 				commentflag=4;
 				prevChar(strTemp);
+				if (next_char == 13 || next_char == 10) {
+					commentflag = 0;
+				}
 			}
-		}
-		if (commentflag == 1 && isNotCommentTag == 0) {
+		} else if (commentflag == 1) {
 			strTemp = "";
 			if (next_char == 13 || next_char == 10) {
 				commentflag = 0;
@@ -304,7 +324,7 @@ int main(int argc, char* argv[]) {
 
 
 		// Function
-		if (strTemp == cFunc/* && functionflag != 1*/) {
+		else if (strTemp == cFunc/* && functionflag != 1*/) {
 			//cout << strTemp;
 			strTemp = "";
 			functionflag = 1;

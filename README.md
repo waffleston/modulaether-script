@@ -1,7 +1,7 @@
 # modulaether-script
-Speeding up development of modular javascript applications.
+Effective javascript modularization and fine-control minification.
 ## What is it?
-It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions are moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.
+It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions can be moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.  It also features inline minification toggles (carriage returns, comments, ...), allowing partial minification / exemptions.
 ## [Download](build/)
 ## Todo:
 * [x] Allow multiple input files.

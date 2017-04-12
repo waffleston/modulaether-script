@@ -26,6 +26,8 @@ const string cInsert = "%^insert";
 	// _1_ is a file to be raw inserted at that line.
 const string cComment = "%^comments";
 	// _1_ off turns comments off, on turns them (back) on.
+const string cCarriage = "%^creturn";
+	// _1_ off turns returns off, on turns them (back) on.
 
 const string bcStart = "/**\n";
 const string bcEnd = "**/\n";
@@ -159,6 +161,7 @@ int main(int argc, char* argv[]) {
 	int removeComments = 0;
 	int commentflag = 0;
 	int blockcommentflag = 0;
+	int crflag = 0;
 	string sDeferralLength = "5000";
 	string sRoot = "./";
 	string content_core;
@@ -288,6 +291,22 @@ int main(int argc, char* argv[]) {
 			commentflag = 0;
 		}
 
+		// Carriage Return
+		else if (strTemp == cCarriage) {
+			strTemp = "\n";
+			crflag = 2;
+		} else if (trimCR(strTemp) == "off" && crflag == 2) {
+			crflag = 1;
+			strTemp = "";
+		} else if (trimCR(strTemp) == "on" && crflag == 2) {
+			crflag = 0;
+			strTemp = "";
+		} else if (crflag == 2) {
+			cout << "CReturn had an invalid argument: " << strTemp << endl;
+			strTemp = "";
+			crflag = 0;
+		}
+
 
 		// Source Definition
 		else if (strTemp == cSourceDef) {
@@ -399,6 +418,9 @@ int main(int argc, char* argv[]) {
 			if (filein.peek() == '\n') {
 				//strTemp += "\n";
 			}
+		}
+		if (crflag == 1) {
+			strTemp = trimCR(strTemp);
 		}
 		fileout << strTemp;
 	}

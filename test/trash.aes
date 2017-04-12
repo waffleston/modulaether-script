@@ -8,6 +8,7 @@
 // %^comments off
 // Now you can see the above instruction did not execute.
 %^comments off
+%^creturn off
 
 "Line comment variations";
 var line1 = function(){}//comment here mates.
@@ -45,7 +46,7 @@ function uwotm8(m,m8) {
 }
 
 /*hi*/
-
+%^creturn on
 /*
 	Tabs are now recognized.
 	So are        multiple spaces!

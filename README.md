@@ -28,6 +28,7 @@ Where [1] is the first argument and so on.
 * [root](#root-1)
 * [insert](#insert-1)
 * [comments](#comments-offon)
+* [creturn](#creturn-offon)
 ### `%^srcdef [1]`
 [1] is an output file to be located at [1].js Ex:
 ```javascript
@@ -36,7 +37,7 @@ Where [1] is the first argument and so on.
 ### `%^fn [1] [2+]`
 [1] is target file, [2+] is the function. Ex:
 ```javascript
-%^fn extrafileone alerter(one, two) {
+%^fn extrafileone somefunction(one, two) {
         if (one%two == 0) {
                 console.log(two);
         } else if (one == 90) {
@@ -69,7 +70,7 @@ Where [1] is the first argument and so on.
 [1] is the path to a local file that should be inserted here. Ex:  
 main file:
 ```javascript
-function hi(one) {
+function insertexample(one) {
         // Insert the macro
         %^insert macro.js
 }
@@ -81,7 +82,7 @@ i++;
 ```
 result:
 ```javascript
-function hi(one) {
+function insertexample(one) {
         // insert the macro
         console.log('hello, '+one);
         i++;
@@ -98,3 +99,17 @@ Ex:
 // %^comments off
 // I'm still visible.
 ```
+### `%^creturn [off/on]`
+Main file:
+```javascript
+%^creturn off
+function returnexample() {
+        return undefined;
+        console.log('undefined is undefined!');
+}
+```
+Output:
+```javascript
+function returnexample() {        return undefined;        console.log('undefined is undefined!');}
+```
+Whitespace will be maintained as a safety precaution against possible issues - smart whitespace removal is in the works.

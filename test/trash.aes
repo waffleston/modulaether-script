@@ -19,6 +19,10 @@ var line5 = function(){} //
 var line6 = function(){} //hello
 var line7 = function(){}//
 
+/**
+ * @function
+ * Returns some memes, I guess.
+ */
 function returnMemes(one,two) {
 	//We have some memes here.
 	var one = $('#body').value;
@@ -28,10 +32,11 @@ function returnMemes(one,two) {
 		ha: 1,
 		h2: 2
 	}
-}
+}/*
 function uwotm8(m,m8) {
 	help;
 }
+*/
 %^defer 3000
 %^srcdef fileone
 %^srcdef filetwo
@@ -45,7 +50,7 @@ function uwotm8(m,m8) {
 	}
 }
 
-/*hi*/
+select/*hi*/Memes(/**/1,2);
 %^creturn on
 /*
 	Tabs are now recognized.

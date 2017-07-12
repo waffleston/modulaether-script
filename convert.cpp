@@ -167,6 +167,7 @@ int main(int argc, char* argv[]) {
 	int iSources = 0;
 	int iBrackets = 0;
 	int writetodoc = 0;
+	int blockflag = 0;
 	
 	for (int a = 1; a < argc; a++) {
 		string filename;
@@ -218,11 +219,33 @@ int main(int argc, char* argv[]) {
 			strTemp += '\n';
 		}
 
+		// Block Comments
+		if (strTemp.find("/*") != string::npos && strTemp.find("*/") == string::npos) {
+			blockflag = 1;
+			//prevChar(strTemp);
+			int endStrTemp = strTemp.find("/*");
+			strTemp = strTemp.substr(0,endStrTemp);
+		} else if (blockflag == 1 && strTemp.find("*/") != string::npos) {
+			blockflag = 0;
+			int endStrTemp = strTemp.find("*/");
+			strTemp = strTemp.substr(endStrTemp+2,strTemp.length()-2);
+		} else if (strTemp.find("/*") != string::npos && strTemp.find("*/") != string::npos) {
+			int startMidStrTemp = strTemp.find("/*");
+			int endMidStrTemp = strTemp.find("*/");
+			strTemp = strTemp.substr(0,startMidStrTemp) + strTemp.substr(endMidStrTemp+2,strTemp.length());
+			cout << "what" << endl;
+		} else if (strTemp.find("/*/") != string::npos) {
+			// Not exactly sure how to interpret this.
+			cout << "Ambiguous comment symbol: '/*/' in '" << strTemp << "' at" << readFile << endl;
+		} else if (blockflag == 1) {
+			strTemp = "";
+		}
+
 		// Line comment locator
 		// --
 		// Line comments have lower priority than block comments.
 		int isNotCommentTag = 0;
-		if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos) {
+		if (strTemp.find("//") != string::npos && strTemp.find("://") == string::npos && blockflag != 1) {
 			if (removeComments == 1) {
 				commentflag=1;
 				prevChar(strTemp);

@@ -84,8 +84,8 @@ result:
 ```javascript
 function insertexample(one) {
         // insert the macro
-        console.log('hello, '+one);
-        i++;
+console.log('hello, '+one);
+i++;
 }
 ```
 ### `%^comments [off/on]`
@@ -95,9 +95,13 @@ Ex:
 // You can't see this.
 %^comments on
 // This is visible.
-// BUT instructions are ignored regardless
+// BUT instructions are ignored in line comments
 // %^comments off
-// I'm still visible.
+// I'm still visible, and the next comments will be too.
+/*
+ * %^comments off
+ * I'm still visible, but the next comment won't be.
+ */
 ```
 ### `%^creturn [off/on]`
 Main file:

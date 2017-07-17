@@ -10,7 +10,7 @@ It's essentially a javascript preprocessing language, designed to improve load t
   * [x] Maintain tabs/spaces before lines.
     * [ ] For minification, optimize whitespace.
   * [x] Detect/remove single-line comments.
-  * [ ] Detect/Remove multi-line comments.
+  * [x] Detect/Remove multi-line comments.
 * [ ] Macro functionality.
   * [ ] Advanced dummy functions.
   * [ ] Expand beyond explicit function manoeuvring.

@@ -220,24 +220,33 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Block Comments
-		if (strTemp.find("/*") != string::npos && strTemp.find("*/") == string::npos) {
-			blockflag = 1;
-			//prevChar(strTemp);
-			int endStrTemp = strTemp.find("/*");
-			strTemp = strTemp.substr(0,endStrTemp);
-		} else if (blockflag == 1 && strTemp.find("*/") != string::npos) {
-			blockflag = 0;
-			int endStrTemp = strTemp.find("*/");
-			strTemp = strTemp.substr(endStrTemp+2,strTemp.length()-2);
-		} else if (strTemp.find("/*") != string::npos && strTemp.find("*/") != string::npos) {
-			int startMidStrTemp = strTemp.find("/*");
-			int endMidStrTemp = strTemp.find("*/");
-			strTemp = strTemp.substr(0,startMidStrTemp) + strTemp.substr(endMidStrTemp+2,strTemp.length());
-			cout << "what" << endl;
-		} else if (strTemp.find("/*/") != string::npos) {
-			// Not exactly sure how to interpret this.
-			cout << "Ambiguous comment symbol: '/*/' in '" << strTemp << "' at" << readFile << endl;
-		} else if (blockflag == 1) {
+		int blockcommentsfound = 1; // preëmptive to let the loop run.
+		int bloccommentsjustset = 0;
+		while (removeComments == 1 && blockcommentsfound == 1) {
+			blockcommentsfound = 0;
+			if (strTemp.find("/*") != string::npos && strTemp.find("*/") == string::npos) {
+				blockflag = 1;
+				//prevChar(strTemp);
+				int endStrTemp = strTemp.find("/*");
+				strTemp = strTemp.substr(0,endStrTemp);
+				blockcommentsfound = 1;
+				bloccommentsjustset = 1;
+			} else if (blockflag == 1 && strTemp.find("*/") != string::npos) {
+				blockflag = 0;
+				int endStrTemp = strTemp.find("*/");
+				strTemp = strTemp.substr(endStrTemp+2,strTemp.length()-2);
+				blockcommentsfound = 1;
+			} else if (strTemp.find("/*") != string::npos && strTemp.find("*/") != string::npos && blockflag == 0) {
+				int startMidStrTemp = strTemp.find("/*");
+				int endMidStrTemp = strTemp.find("*/");
+				strTemp = strTemp.substr(0,startMidStrTemp) + strTemp.substr(endMidStrTemp+2,strTemp.length());
+				blockcommentsfound = 1;
+			} else if (strTemp.find("/*/") != string::npos) {
+				// Not exactly sure how to interpret this.
+				cout << "Ambiguous comment symbol: '/*/' in '" << strTemp << "' at" << readFile << endl;
+			}
+		}
+		if (blockflag == 1 && bloccommentsjustset == 0) {
 			strTemp = "";
 		}
 

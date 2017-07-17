@@ -60,3 +60,28 @@ select/*hi*/Memes(/**/1,2);
 %^srcdef from_memes
 
 console.log(" %^insert inserted.txt ");
+
+hello/**/
+he/**/llo
+/**/hello
+/**/
+hello
+/**/
+
+hello/*a*/
+he/*a*/llo
+/*a*/hello
+/*a*/
+hello
+/*a*/
+
+he/*a*/llo/*a*/
+he/*a*/l/*a*/lo
+/*a*/h/*a*/ello
+/*a*//*a*/
+hello
+/*a*/
+
+he/*
+lol
+*/l/*a*/l/*a*/o

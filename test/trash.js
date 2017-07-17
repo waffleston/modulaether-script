@@ -1,6 +1,6 @@
 /*
  * This file generated from modulaether-script source.
- * Generated at Wed Jul 12 15:30:33 2017
+ * Generated at Mon Jul 17 08:59:12 2017
  */
 // Hello, there!
 
@@ -17,7 +17,7 @@
 		selectMemes = maes_selectMemes; 
 		maes_selectMemes.apply(this, arguments); 
 	}
-}selectMemes(/**/1,2);
+}selectMemes(1,2);
 
 setTimeout($.getScript("/HTML/core/from_memes.js"),3000);
 console.log("This string was pulled from inserted.txt! \
@@ -25,3 +25,22 @@ console.log("This string was pulled from inserted.txt! \
 
 var injection = "hello \
  ");
+hello
+hello
+hello
+
+hello
+
+hello
+hello
+hello
+
+hello
+
+hello
+hello
+hello
+
+hello
+
+hello

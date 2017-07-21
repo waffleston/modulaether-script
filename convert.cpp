@@ -119,14 +119,14 @@ string replacer (string sFn) {
 	} else {
 		return "";
 	}
-	resultant += rFn+"() { \n"
-	"\tif (typeof maes_"+rFn+" == 'undefined') { \n"
-	"\t\twindow.setTimeout("+rFn+",100); \n"
-	"\t} else { \n"
-	"\t\t"+rFn+" = maes_"+rFn+"; \n"
-	"\t\tmaes_"+rFn+".apply(this, arguments); \n"
-	"\t}\n}\n";
-	//cout << "Remote function created: "+rFn+"\n";
+	resultant += rFn+"() {"
+		"if (typeof maes_"+rFn+" == 'undefined') {"
+			"window.setTimeout("+rFn+",100);"
+		"} else {"
+			""+rFn+" = maes_"+rFn+";"
+			"maes_"+rFn+".apply(this, arguments);"
+		"}"
+	"}";
 	return resultant;
 }
 int main(int argc, char* argv[]) {

@@ -1,20 +1,19 @@
 # modulaether-script
 Effective javascript modularization and fine-control minification.
 ## What is it?
-It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions can be moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.  It also features inline minification toggles (carriage returns, comments, ...), allowing partial minification / exemptions.
+It's essentially a javascript preprocessing language, designed to improve load times on initialization.  Non-critical functions can be moved to alternate files and loaded asynchronously+deferred to ensure user experience is not impacted.  It also features inline minification toggles (carriage returns, comments, spaces, ...), allowing partial minification / exemptions.
 ## [Download](build/)
-## Todo:
-* [x] Allow multiple input files.
-  * [x] in-file command to insert files.
-* [ ] Differentiate/Build-in optional minification/obfuscation.
+Windows temporarily unavailable.
+
+## In Progress:
+* [x] Minification
   * [x] Maintain tabs/spaces before lines.
-    * [ ] For minification, optimize whitespace.
-  * [x] Detect/remove single-line comments.
-  * [x] Detect/Remove multi-line comments.
+    * [x] Optimize spaces.
+* [ ] Obfuscation
 * [ ] Macro functionality.
   * [ ] Advanced dummy functions.
   * [ ] Expand beyond explicit function manoeuvring.
-* [ ] Syntax validation.
+* [x] (modulaether-script specific) Syntax validation.
 
 ## Instruction Reference
 Instructions are lines of code prefixed with `%^` that tell the compiler to do something.  
@@ -29,6 +28,8 @@ Where [1] is the first argument and so on.
 * [insert](#insert-1)
 * [comments](#comments-offon)
 * [creturn](#creturn-offon)
+* [spaces](#spaces-offon)
+* [tabs](#tabs-offon)
 ### `%^srcdef [1]`
 [1] is an output file to be located at [1].js Ex:
 ```javascript
@@ -116,4 +117,34 @@ Output:
 ```javascript
 function returnexample() {        return undefined;        console.log('undefined is undefined!');}
 ```
-Whitespace will be maintained as a safety precaution against possible issues - smart whitespace removal is in the works.
+### `%^spaces [off/on]`
+Main file:
+```javascript
+%^spaces off
+function spaces(one, two) {
+        var three = one + two - two;
+        console.log(three + two);
+}
+```
+Output
+```javascript
+function spaces(one,two){
+        var three=one+two-two;
+        console.log(one+two);
+}
+```
+### `%^tabs [off/on]`
+Main file:
+```javascript
+%^tabs off
+%^spaces off
+%^creturn off
+function returnextwo(one, two) {
+        var resultant = one * two;
+        return resultant;
+}
+```
+Output:
+```javascript
+function returnextwo(one,two){var resultant=one*two;return resultant;}
+```

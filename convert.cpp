@@ -8,7 +8,7 @@
 #include <ctime> // Visual C++ fix.
 using namespace std;
 
-const string maejs_v = "modulaether-script v0.0.52 (2017-jul-26)";
+const string maejs_v = "modulaether-script v0.0.56 (2017-jul-26)";
 	// version string.
 
 const string cSourceDef = "%^srcdef";
@@ -541,5 +541,15 @@ int main(int argc, char* argv[]) {
 		fileout << documents[i];
 		fileout.close();
 	}
+
+	// Temporary catch for header corruption.
+	ifstream filein(chjs);
+	string strHeaderWord;
+	filein >> strHeaderWord;
+	if (strHeaderWord[0] != '/') {
+		cout << "The generated header in " << fn_js << " is corrupt." << endl <<"Please submit this to our GitHub Issue Tracker." << endl << "\nRunning the build again should properly generate the header.\n" << endl;
+	}
+	filein.close();
+	
 	return 0;
 }

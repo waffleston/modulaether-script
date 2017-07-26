@@ -85,7 +85,7 @@ char retChar(char inbound) {
 			filein.unget(); \
 			prev_char = filein.get(); \
 			if (prev_char != ' ' && prev_char != '\t') { \
-				if ((whitespace_ignore == 3 || whitespace_ignore == 2) && ((prev_char >= 40 && prev_char <= 63) || (prev_char >= 91 && prev_char <= 94) || prev_char == 37 || prev_char == 38 || prev_char == 33 || (prev_char >= 123 && prev_char <= 126))) pre_word = ""; \
+				if ((whitespace_ignore == 3 || whitespace_ignore == 2) && ((prev_char >= 40 && prev_char <= 47) || (prev_char >= 58 && prev_char <= 63) || (prev_char >= 91 && prev_char <= 94) || prev_char == 37 || prev_char == 38 || prev_char == 33 || (prev_char >= 123 && prev_char <= 126))) pre_word = ""; \
 				break; \
 			} else { \
 				if (whitespace_ignore == 0 || (whitespace_ignore == 1 && prev_char != '\t')){ \
@@ -93,7 +93,7 @@ char retChar(char inbound) {
 				} else if (whitespace_ignore == 2 && prev_char == '\t') { \
 				}\
 				if ((whitespace_ignore == 3 || whitespace_ignore == 2) && prev_char == ' ') {\
-					if (!((strTemp[0] >= 40 && strTemp[0] <= 63) || (strTemp[0] >= 91 && strTemp[0] <= 94) || strTemp[0] == 37 || strTemp[0] == 38 || strTemp[0] == 33 || (strTemp[0] >= 123 && strTemp[0] <= 126))) {\
+					if (!((strTemp[0] >= 40 && strTemp[0] <= 47) || (strTemp[0] >= 58 && strTemp[0] <= 63) || (strTemp[0] >= 91 && strTemp[0] <= 94) || strTemp[0] == 37 || strTemp[0] == 38 || strTemp[0] == 33 || (strTemp[0] >= 123 && strTemp[0] <= 126))) {\
 						pre_word += prev_char; \
 					} else {\
 						trimWS(strTemp);\

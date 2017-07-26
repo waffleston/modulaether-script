@@ -28,10 +28,8 @@
 *.out
 *.app
 *.swp
-.convert.cpp.un~
-*.cpp~
-*.un~
-*.sh~
-*.md~
-*.aes~
-*.bat~
+
+# Vi
+*.*~
+
+# Added by GitHub Desktop

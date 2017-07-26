@@ -8,8 +8,9 @@
 #include <ctime> // Visual C++ fix.
 using namespace std;
 
-const char cmd = '%';
-	// unused
+const string maejs_v = "modulaether-script v0.0.52 (2017-jul-26)";
+	// version string.
+
 const string cSourceDef = "%^srcdef";
 	// _1_ (first argument) is an output file to be located at _1_.js
 const string cFunc = "%^fn";
@@ -28,6 +29,10 @@ const string cComment = "%^comments";
 	// _1_ off turns comments off, on turns them (back) on.
 const string cCarriage = "%^creturn";
 	// _1_ off turns returns off, on turns them (back) on.
+const string cTabs = "%^tabs";
+	// _1_ off turns tabs off, on turns them (back) on.
+const string cSpaces = "%^spaces";
+	// _1_ off turns spaces off, on turns them (back) on.
 
 char retChar(char inbound) {
 	// This is just a test to see how to unlink variable from function.
@@ -79,13 +84,22 @@ char retChar(char inbound) {
 			prevcharcounter++; \
 			filein.unget(); \
 			prev_char = filein.get(); \
-			/*cout << "Character encountered: " << prev_char << endl;*/ \
 			if (prev_char != ' ' && prev_char != '\t') { \
-				/*cout << "Char encountered: " << prev_char << endl;*/ \
+				if ((whitespace_ignore == 3 || whitespace_ignore == 2) && ((prev_char >= 40 && prev_char <= 63) || (prev_char >= 91 && prev_char <= 94) || prev_char == 37 || prev_char == 38 || prev_char == 33 || (prev_char >= 123 && prev_char <= 126))) pre_word = ""; \
 				break; \
 			} else { \
-				pre_word += prev_char; \
-			} \
+				if (whitespace_ignore == 0 || (whitespace_ignore == 1 && prev_char != '\t')){ \
+					pre_word += prev_char; \
+				} else if (whitespace_ignore == 2 && prev_char == '\t') { \
+				}\
+				if ((whitespace_ignore == 3 || whitespace_ignore == 2) && prev_char == ' ') {\
+					if (!((strTemp[0] >= 40 && strTemp[0] <= 63) || (strTemp[0] >= 91 && strTemp[0] <= 94) || strTemp[0] == 37 || strTemp[0] == 38 || strTemp[0] == 33 || (strTemp[0] >= 123 && strTemp[0] <= 126))) {\
+						pre_word += prev_char; \
+					} else {\
+						trimWS(strTemp);\
+					}\
+				}\
+			}\
 		} \
 		for (int i = 0; i < prevcharcounter; i++) { \
 			filein.get(); \
@@ -93,9 +107,18 @@ char retChar(char inbound) {
 		tResult = pre_word + tResult; \
 	} while (0)
 
+#define synerr(keyword) \
+	cout << "Syntax error: " << strTemp.substr(0,strTemp.length()-1) << " is not a valid option for " << keyword << endl; \
+	return 2
+
 
 string trimCR(string inbound) {
 	inbound.erase(inbound.find_last_not_of("\n\r")+1);
+	return inbound;
+}
+
+string trimWS(string inbound) {
+	inbound.erase(inbound.find_last_not_of("\t ")+1);
 	return inbound;
 }
 
@@ -130,6 +153,11 @@ string replacer (string sFn) {
 	return resultant;
 }
 int main(int argc, char* argv[]) {
+	// single dash and double dash notation.
+	if (argv[1][0] == '-' && (argv[1][1] == 'v' || (argv[1][1] == '-' && argv[1][2] == 'v'))) {
+		cout << maejs_v << endl;
+		return 1;
+	}
 	if (argc < 2) {
 		cout << "Modulaether-script; preprocesses .aes files to modular javascript." << endl;
 		cout << "Usage: maejs main_file [other_files...]" << endl;
@@ -168,6 +196,9 @@ int main(int argc, char* argv[]) {
 	int iBrackets = 0;
 	int writetodoc = 0;
 	int blockflag = 0;
+	int whitespace_ignore = 0; // 0 -> dont, 1 -> tabs, 2-> tabs and spaces, 3-> spaces
+	int tabflag = 0;
+	int spaceflag = 0;
 	
 	for (int a = 1; a < argc; a++) {
 		string filename;
@@ -226,7 +257,6 @@ int main(int argc, char* argv[]) {
 			blockcommentsfound = 0;
 			if (strTemp.find("/*") != string::npos && strTemp.find("*/") == string::npos) {
 				blockflag = 1;
-				//prevChar(strTemp);
 				int endStrTemp = strTemp.find("/*");
 				strTemp = strTemp.substr(0,endStrTemp);
 				blockcommentsfound = 1;
@@ -298,13 +328,11 @@ int main(int argc, char* argv[]) {
 			commentflag = 0;
 			removeComments = 0;
 		} else if (commentflag == 2) {
-			cout << "Comments had an invalid argument: " << strTemp << endl;
-			strTemp = "";
-			commentflag = 0;
+			synerr(cComment);
 		}
 
 		// Carriage Return
-		else if (strTemp == cCarriage) {
+		if (strTemp == cCarriage) {
 			strTemp = "\n";
 			crflag = 2;
 		} else if (trimCR(strTemp) == "off" && crflag == 2) {
@@ -314,14 +342,12 @@ int main(int argc, char* argv[]) {
 			crflag = 0;
 			strTemp = "";
 		} else if (crflag == 2) {
-			cout << "CReturn had an invalid argument: " << strTemp << endl;
-			strTemp = "";
-			crflag = 0;
+			synerr(cCarriage);
 		}
 
 
 		// Source Definition
-		else if (strTemp == cSourceDef) {
+		if (strTemp == cSourceDef) {
 			strTemp = "";
 			srcflag = 1;
 		} else if (srcflag == 1) {
@@ -334,7 +360,7 @@ int main(int argc, char* argv[]) {
 			srcflag = 0;
 		}
 		// Deferral
-		else if (strTemp == cDefer) {
+		if (strTemp == cDefer) {
 			strTemp = "";
 			deferflag = 1;
 		} else if (deferflag == 1) {
@@ -344,13 +370,74 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Root
-		else if (strTemp == cRoot) {
+		if (strTemp == cRoot) {
 			strTemp = "";
 			rootflag = 1;
 		} else if (rootflag == 1) {
 			sRoot = strTemp;
 			rootflag = 0;
 			strTemp = "";
+		}
+
+		// Tabs
+		if (strTemp == cTabs) {
+			strTemp = "";
+			tabflag = 1;
+		} else if (tabflag == 1) {
+			if (trimCR(strTemp) == "off") {
+				switch (whitespace_ignore) {
+					case 0:
+						whitespace_ignore = 1;
+						break;
+					case 3:
+						whitespace_ignore = 2;
+				}
+			} else if (trimCR(strTemp) == "on") {
+				switch (whitespace_ignore) {
+					case 1:
+						whitespace_ignore = 0;
+						break;
+					case 2:
+						whitespace_ignore = 3;
+				}
+			} else {
+				synerr(cTabs);
+			}
+			tabflag = 0;
+			strTemp = "";
+		}
+
+		// Spaces
+		if (strTemp == cSpaces) {
+			strTemp = "";
+			spaceflag = 1;
+		} else if (spaceflag == 1) {
+			if (trimCR(strTemp) == "off") {
+				switch (whitespace_ignore) {
+					case 1:
+						whitespace_ignore = 2;
+						break;
+					case 0:
+						whitespace_ignore = 3;
+				}
+			} else if (trimCR(strTemp) == "on") {
+				switch (whitespace_ignore) {
+					case 3:
+						whitespace_ignore = 0;
+						break;
+					case 2:
+						whitespace_ignore = 1;
+				}
+			} else {
+				synerr(cSpaces);
+			}
+			spaceflag = 0;
+			strTemp = "";
+		}
+
+		else if (strTemp.substr(0,2) == "%^" && strTemp != cFunc && strTemp != cInsert) {
+			cout << "Sytax error: " << strTemp << " is not a valid maejs command." << endl;
+			return 1;
 		}
 
 
@@ -425,7 +512,7 @@ int main(int argc, char* argv[]) {
 			buffer << t.rdbuf();
 			strTemp = buffer.str();
 			insertflag = 0;
-		} else {
+		} else if (blockflag != 1) {
 			prevChar(strTemp);
 			if (filein.peek() == '\n') {
 				//strTemp += "\n";

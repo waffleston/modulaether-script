@@ -9,25 +9,32 @@
 // Now you can see the above instruction did not execute.
 %^comments off
 %^creturn off
+%^tabs off
 
 "Line comment variations";
-var line1 = function(){}//comment here mates.
-var line2 = function(){} //comment here mates.
-var line3 = function(){}// Comment here mates.
-var line4 = function(){} //.
-var line5 = function(){} //
-var line6 = function(){} //hello
-var line7 = function(){}//
+%^creturn on
+var line1 = function() {}//comment here mates.
+var line2 = function() {} //comment here mates.
+var line3 = function() {}// Comment here mates.
+%^spaces off
+var line4 = function() {} //.
+var line5 = function() {} //
+var line6 = function() {} //hello
+%^spaces on
+%^creturn off
+var line7 = function() {}//
 
 /**
  * @function
  * Returns some memes, I guess.
+ * @param {Number} one
  */
 function returnMemes(one,two) {
 	//We have some memes here.
 	var one = $('#body').value;
 	var two = $('#head').value;
 	selectMemes()
+%^tabs on
 	var shrubs = {
 		ha: 1,
 		h2: 2
@@ -85,3 +92,15 @@ hello
 he/*
 lol
 */l/*a*/l/*a*/o
+
+	%^spaces on
+	%^tabs on
+	1 2 3 4
+	%^spaces off
+	1 2 3 4
+	%^tabs off
+	1 2 3 4
+	%^spaces on
+	1 2 3 4
+	%^tabs on
+	1 2 3 4

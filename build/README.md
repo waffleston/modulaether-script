@@ -1,5 +1,6 @@
 # Downloadables
 ### `maejs` was compiled with `g++-4.9 -o -static-libgcc -static-libstdc++ -static`
-### `maejs.exe` was compiled with Visual Studio as a `Console Application` under platform `Active(x64)`.
+### `maejs.exe` is temporarily unnavailable.
+The IO library in mingw is acting very strange.  Will switch to VC++ with next commit assuming that works.
 <hr>
 Submit an issue if you need it on a different platform.

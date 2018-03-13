@@ -1,0 +1,21 @@
+%^thisfile redirect.txt
+%^comments off
+%^spaces off
+/**
+ * Docs
+ */
+function (lolero, nice_memes, gg) {
+	return dank; // This is a good test.
+	var a = "A good comment, indeed starts with //."; // Ha!
+	var /* here's a test */ b = "wat";
+	var /**/ a /**/ = /**/ " /**/ ";
+}
+%^insert fileone.js
+
+// Random Block Comment
+
+%^creturn off
+var nice = "
+%^insert oneline.txt
+";
+%^creturn on
